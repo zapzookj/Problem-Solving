@@ -7,8 +7,8 @@ class Solution {
         Arrays.sort(lottos);
         Arrays.sort(win_nums);
         
-        int zeroCount = 0; // 0의 개수
-        int matchCount = 0; // 일치하는 번호의 개수
+        int zeroCount = 0; 
+        int matchCount = 0; 
         
         for (int lotto : lottos) {
             if (lotto == 0) {

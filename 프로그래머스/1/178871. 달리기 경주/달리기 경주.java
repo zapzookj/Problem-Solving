@@ -5,30 +5,25 @@ import java.util.Map;
 class Solution {
     public String[] solution(String[] players, String[] callings) {
         String[] answer = new String[players.length];
+        Map<String, Integer> rankMap = new HashMap<>();
         List<String> playerList = new ArrayList<>();
-        Map<String, Integer> playerIndexMap = new HashMap<>();
-
-        for (int i = 0; i < players.length; i++) {
-            playerList.add(players[i]);
-            playerIndexMap.put(players[i], i);
+        
+        for(int i = 1; i <= players.length; i++) {
+            rankMap.put(players[i-1], i);
+            playerList.add(players[i-1]);
         }
-
-        for (String calling : callings) {
-            int index = playerIndexMap.get(calling);
-            if (index > 0) { // 첫 번째 요소가 아닌 경우에만 수행
-                String temp = playerList.get(index - 1);
-                playerList.set(index - 1, calling);
-                playerList.set(index, temp);
-            
-                // 맵 업데이트
-                playerIndexMap.put(calling, index - 1);
-                playerIndexMap.put(temp, index);
-            }
+        for(int i = 0; i < callings.length; i++) {
+            Integer tempRank = rankMap.get(callings[i]); // 호명된 선수의 원래 등수
+            String tempPlayer = playerList.get(tempRank - 2); // 호명된 선수에게 추월당한 선수
+            playerList.set(tempRank - 2, callings[i]); // 호명된 선수를 추월당한 선수의 위치로 옮김
+            playerList.set(tempRank -1, tempPlayer); // 추월당한 선수를 호명된 선수의 위치로 옮김
+            rankMap.put(callings[i], tempRank-1); // rankMap도 변경
+            rankMap.put(tempPlayer, tempRank);
         }
-
-        for (int i = 0; i < playerList.size(); i++) {
+        for(int i = 0; i < answer.length; i++) {
             answer[i] = playerList.get(i);
         }
+      
         return answer;
     }
 }

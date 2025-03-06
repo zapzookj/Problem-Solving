@@ -3,9 +3,9 @@ class Solution {
         int answer = 0;
         int temp = 0;
         
-        while(n>=a){
-            answer += b*(n/a); 
-            temp = n%a; 
+        while(n >= a) {
+            answer += b * (n / a); 
+            temp = n % a; 
             n /= a; 
             n *= b;
             n += temp; 

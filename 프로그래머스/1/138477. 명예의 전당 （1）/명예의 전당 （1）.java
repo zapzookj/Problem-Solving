@@ -1,17 +1,16 @@
 import java.util.*;
 class Solution {
     public List solution(int k, int[] score) {
-        List<Integer> jundang = new ArrayList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         List<Integer> result = new ArrayList<>();
         
         for(int i = 0; i < score.length; i++) {
-            jundang.add(score[i]);
-            jundang.sort(Comparator.reverseOrder());
-            if (i < k) {
-                result.add(jundang.get(i));
-            } else {
-                result.add(jundang.get(k-1));
+            pq.offer(score[i]);
+            
+            if (pq.size() > k) {
+                pq.poll();
             }
+            result.add(pq.peek());
         }
         
         return result;

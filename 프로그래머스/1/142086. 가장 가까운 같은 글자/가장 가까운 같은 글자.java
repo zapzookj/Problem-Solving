@@ -1,23 +1,41 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 class Solution {
     public int[] solution(String s) {
-        int[] answer = new int[s.length()];
-        char[] arr = s.toCharArray();
-        List<Character> list = new ArrayList<>();
-        for(int i = 0; i<arr.length; i++){
-            if(!list.contains(arr[i])){
-                answer[i] = -1;
-            }else{
-                for(int j = i-1; j>=0; j--){
-                    if(arr[j] == arr[i]){
-                        answer[i] = i - j;
-                        break;
-                    }
-                }
+        
+        int[] result = new int[s.length()];
+        Map<Character, Integer> map = new HashMap<>();
+        char[] charArr = s.toCharArray();
+        
+        for (int i = 0; i < charArr.length; i++) {
+            if (map.containsKey(charArr[i])) {
+                result[i] = i - map.get(charArr[i]);
+            } else {
+                result[i] = -1;
             }
-            list.add(arr[i]);
+            
+            map.put(charArr[i], i);
         }
-        return answer;
+        
+        return result;
     }
 }
+
+// 만약 해시맵을 사용한다면 위 코드보다 시간 복잡도를 크게 줄일 수 있다. 문제상황에 따른 자료구조 활용을 좀 더 연습하자.
+
+// public int[] solution(String s) {
+//         int[] answer = new int[s.length()];
+//         HashMap<Character, Integer> indexMap = new HashMap<>();
+
+//         for (int i = 0; i < s.length(); i++) {
+//             char currentChar = s.charAt(i);
+
+//             if (indexMap.containsKey(currentChar)) {
+//                 answer[i] = i - indexMap.get(currentChar);
+//             } else {
+//                 answer[i] = -1;
+//             }
+
+//             indexMap.put(currentChar, i);
+//         }
+//         return answer;
+//     }

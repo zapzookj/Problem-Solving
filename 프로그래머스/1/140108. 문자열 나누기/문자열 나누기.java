@@ -9,6 +9,7 @@ class Solution {
         int xNum = 0;
         int otherNum = 0;
         char x = arr[0];
+        
         for(int i = 0; i<arr.length; i++){
             tempList.add(arr[i]);
             temp = tempList.size() - 1;

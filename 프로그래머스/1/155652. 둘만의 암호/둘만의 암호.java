@@ -6,8 +6,8 @@ class Solution {
         List<Character> alphabetList = new ArrayList<>();
         char[] skipArr = skip.toCharArray();
         char[] sArr = s.toCharArray();
-        for(char ch = 'a'; ch <= 'z'; ch++) { 
-            if(skip.indexOf(ch) == -1) { 
+        for (char ch = 'a'; ch <= 'z'; ch++) { 
+            if (skip.indexOf(ch) == -1) { 
                 alphabetList.add(ch);
             }
         }

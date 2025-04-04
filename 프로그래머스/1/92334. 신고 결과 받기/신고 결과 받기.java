@@ -3,51 +3,50 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
         int[] answer = new int[id_list.length];
-        ArrayList<User> users = new ArrayList<>();
-        HashMap<String,Integer> suspendedList = new HashMap<>(); //<이름>
-        HashMap<String,Integer> idIdx = new HashMap<String,Integer>(); // <이름, 해당 이름의 User 클래스 idx>
-        int idx = 0;
 
-        for(String name : id_list) {
-            idIdx.put(name,idx++);
-            users.add(new User(name));
+        // 유저 → 신고한 유저들
+        Map<String, Set<String>> userReports = new HashMap<>();
+        // 유저 → 신고당한 횟수
+        Map<String, Integer> reportCount = new HashMap<>();
+
+        // 초기화
+        for (String id : id_list) {
+            userReports.put(id, new HashSet<>());
+            reportCount.put(id, 0);
         }
 
-        for(String re : report){
-            String[] str = re.split(" ");
-            //suspendedCount.put(str[0], suspendedCount.getOrDefault(str[0],0)+1);
-            users.get( idIdx.get(str[0])).reportList.add(str[1]);
-            users.get( idIdx.get(str[1])).reportedList.add(str[0]);
+        // 1. 중복 신고 제거 후 처리
+        for (String r : report) {
+            String[] split = r.split(" ");
+            String reporter = split[0]; // 신고자
+            String target = split[1];   // 피신고자
+
+            if (!userReports.get(reporter).contains(target)) {
+                userReports.get(reporter).add(target);
+                reportCount.put(target, reportCount.get(target) + 1);
+            }
         }
 
-        for(User user : users){
-            if(user.reportedList.size() >= k)
-                suspendedList.put(user.name,1);
+        // 2. 정지된 유저 목록 생성
+        Set<String> banned = new HashSet<>();
+        for (String id : id_list) {
+            if (reportCount.get(id) >= k) {
+                banned.add(id);
+            }
         }
 
-         for(User user : users){
-             for(String nameReport : user.reportList){
-                 if(suspendedList.get(nameReport) != null){
-                     answer[idIdx.get(user.name)]++;
-                 }
+        // 3. 각 유저가 받은 메일 수 계산
+        for (int i = 0; i < id_list.length; i++) {
+            String reporter = id_list[i];
+            Set<String> reported = userReports.get(reporter);
 
-             }
+            for (String target : reported) {
+                if (banned.contains(target)) {
+                    answer[i]++;
+                }
+            }
         }
-
-
-
 
         return answer;
-    }
-}
-
-class User{
-    String name;
-    HashSet<String> reportList;
-    HashSet<String> reportedList;
-    public User(String name){
-        this.name = name;
-        reportList = new HashSet<>();
-        reportedList = new HashSet<>();
     }
 }
